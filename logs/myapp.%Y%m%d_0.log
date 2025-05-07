@@ -1,0 +1,2 @@
+2025-05-07T09:22:21+00:00	fluent.info	{"pid":25,"ppid":8,"worker":0,"message":"starting fluentd worker pid=25 ppid=8 worker=0"}
+2025-05-07T09:22:21+00:00	fluent.info	{"worker":0,"message":"fluentd worker is now running worker=0"}
