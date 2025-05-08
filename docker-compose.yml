@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
   elasticsearch:
@@ -7,6 +7,8 @@ services:
       - discovery.type=single-node
     ports:
       - "9200:9200"
+    networks:
+      - efk
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.4.2
@@ -16,10 +18,31 @@ services:
       - "5601:5601"
     depends_on:
       - elasticsearch
+    networks:
+      - efk
 
   fluentd:
     build: ./fluentd
     volumes:
       - ./fluentd/conf:/fluentd/etc
+      - ./logs:/logs
     ports:
       - "8080:8080"
+      - "24224:24224"
+      - "24224:24224/udp"
+    depends_on:
+      - elasticsearch
+    networks:
+      - efk
+
+  telegram-bot:
+    build:
+      context: ./bot
+    depends_on:
+      - fluentd
+    networks:
+      - efk
+
+networks:
+  efk:
+    driver: bridge
